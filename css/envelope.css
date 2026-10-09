@@ -1,0 +1,893 @@
+/* ==========================================================================
+   SCREEN 1 — THE ENVELOPE
+   Carried over from the first version unchanged in look and timing: the
+   embroidered envelope, wax seal, flap, card, drifting flowers and
+   butterflies. Envelope colours come from theme.envelope in js/content.js;
+   the defaults are below.
+   ========================================================================== */
+:root {
+  --color-envelope-screen: #fcefd3;  /* = the opening page's paper colour */
+  --color-ink: #3a2e28;
+  --color-muted: #75655a;
+  --color-accent: #b6884f;
+  --color-accent-dark: #8a6238;
+  --color-envelope: #ffd3ac;
+  --color-envelope-shade: #f3bb8e;
+  --color-envelope-inner: #d9956a;
+  --color-letter: #fbf6ea;           /* the card that slides out */
+  --color-fold-line: #c9a15f;        /* thin gold border on the card */
+  --color-seal: #e8c874;             /* gold wax seal */
+  --color-seal-dark: #a97c2f;
+  --color-thread: #b8845a;           /* embroidery thread */
+  --color-cream: #f1e3cf;
+  --color-cream-shade: #e3d0ae;
+
+  --font-display: 'Playfair Display', Georgia, serif;          /* italic lines, notes */
+  --font-script: 'Italianno', 'Segoe Script', cursive;         /* names, titles */
+  --font-caps: 'Cinzel', 'Playfair Display', Georgia, serif;   /* all-caps lines */
+  --font-body: 'Jost', 'Segoe UI', sans-serif;                 /* buttons, small labels */
+
+  /* soft vignette + blurred colour blobs behind the envelope */
+  --bg-vignette: radial-gradient(ellipse at center, transparent 55%, rgba(120, 80, 40, 0.10) 100%);
+  --bg-glow:
+    radial-gradient(circle at 12% 22%, rgba(232, 199, 116, 0.4), transparent 55%),
+    radial-gradient(circle at 88% 14%, rgba(169, 197, 140, 0.3), transparent 50%),
+    radial-gradient(circle at 18% 82%, rgba(201, 161, 95, 0.28), transparent 50%),
+    radial-gradient(circle at 90% 76%, rgba(232, 199, 116, 0.32), transparent 50%);
+}
+
+/* Fills the whole phone screen, including the strips behind Safari's
+   toolbars and the notch: as tall as the screen can get (100lvh), with the
+   envelope centred in the part that is actually visible (padding-bottom =
+   the height the toolbars take). Its edges are the plain paper colour,
+   which is also the page colour, so Safari's tinted bars match it. */
+#envelope-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  height: 100lvh;
+  min-height: 100%;
+  padding-bottom: calc(100lvh - 100dvh);
+  /* the opening page's paper colour, so nothing shifts as this fades out */
+  background-color: var(--color-envelope-screen);
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  transition: opacity 1.1s ease, visibility 1.1s ease;
+}
+
+/* the soft glows and vignette, fading out before the top and bottom edges */
+#envelope-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-vignette), var(--bg-glow);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  pointer-events: none;
+}
+
+#envelope-screen.envelope-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.envelope-scene {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+  transform: scale(1);
+  transition: transform 0.9s ease, opacity 0.9s ease;
+}
+
+/* The letter is front-and-centre by the time this kicks in, so the
+   scene drifts slightly *towards* the viewer as it fades out. */
+#envelope-screen.envelope-hidden .envelope-scene {
+  transform: scale(1.06);
+  opacity: 0;
+}
+
+/* ---- Envelope ----
+   Open sequence (all driven by .is-opening on #envelope-screen; times
+   are from the click and must stay in sync with OPEN_MS in script.js):
+     0.00s  seal is pressed gently
+     0.45s  flap swings open, carrying the seal with it (the inside
+            lining shows once it passes 90deg)
+     1.80s  card slides all the way out of the pocket
+     3.00s  card moves in front of the envelope and settles over it
+     4.60s  round card photo enlarges to the middle of the screen while
+            the envelope fades out behind it (1.1s, script.js)
+     5.70s  photo holds on screen (2s, ZOOM_HOLD_MS in script.js)
+     7.70s  main page is swapped in and the photo fades away (0.8s)   */
+.envelope-float {
+  position: relative;
+  animation: envelope-float 5s ease-in-out infinite;
+}
+
+@keyframes envelope-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.envelope-ground-shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -26px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(70, 30, 20, 0.28), transparent 70%);
+  animation: ground-shadow 5s ease-in-out infinite;
+}
+
+@keyframes ground-shadow {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(0.92);
+    opacity: 0.75;
+  }
+}
+
+.envelope {
+  position: relative;
+  display: block;
+  width: min(320px, 78vw);
+  aspect-ratio: 3 / 2;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  container-type: inline-size;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.4s cubic-bezier(.2, .8, .2, 1);
+}
+
+.envelope:hover {
+  transform: translateY(-4px);
+}
+
+.envelope:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 10px;
+  border-radius: 6px;
+}
+
+.envelope svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.envelope-back,
+.envelope-pocket,
+.envelope-flap-wrap,
+.envelope-letter {
+  position: absolute;
+  display: block;
+}
+
+.envelope-back,
+.envelope-pocket,
+.envelope-flap-wrap {
+  inset: 0;
+}
+
+.envelope-back {
+  z-index: 1;
+  border-radius: 2.7% / 4%;
+  box-shadow:
+    0 18px 30px -8px rgba(70, 12, 12, 0.35),
+    0 4px 10px rgba(70, 12, 12, 0.18);
+}
+
+.envelope-letter {
+  z-index: 3;
+  left: 5%;
+  right: 5%;
+  top: 5%;
+  height: 88%;
+  padding: 5%;
+  border-radius: 3px;
+  background: linear-gradient(170deg, #fffdf7, var(--color-letter) 60%, #f2e8d4);
+  box-shadow: 0 1px 3px rgba(60, 30, 10, 0.2);
+}
+
+/* thin double gold border on the card, with the round photo centred in it */
+.letter-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 3.4cqw;
+  border: 1px solid var(--color-fold-line);
+  outline: 1px solid rgba(201, 161, 95, 0.35);
+  outline-offset: -5px;
+}
+
+/* The card's photo — always a circle (1:1), so a round image is never
+   squashed or cropped. Also used (cloned) for the zoom — see
+   zoomCardPhoto() in script.js — so these rules must not depend on
+   being inside the envelope. */
+.letter-photo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  height: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--color-cream), var(--color-cream-shade));
+  box-shadow: 0 0 0 1px var(--color-fold-line);
+  text-align: center;
+}
+
+.letter-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Shown until envelope.cardImage exists: a calligraphy monogram */
+.letter-photo-fallback {
+  display: none;
+  font-family: var(--font-script);
+  font-size: 10.5cqw;
+  line-height: 1;
+  padding: 0 8%;
+  white-space: nowrap;
+  color: var(--color-accent-dark);
+}
+
+.letter-photo.image-broken img {
+  display: none;
+}
+
+.letter-photo.image-broken .letter-photo-fallback {
+  display: block;
+}
+
+/* Zoomed copy of the card photo */
+.letter-zoom {
+  position: fixed;
+  z-index: 150;
+  margin: 0;
+  box-shadow: 0 0 0 1px var(--color-fold-line), 0 20px 50px rgba(60, 30, 10, 0.3);
+  pointer-events: none;
+}
+
+/* While the photo zooms, the envelope fades out behind it (the page
+   background and butterflies stay). */
+#envelope-screen.is-zooming .envelope-scene {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.envelope-pocket {
+  z-index: 4;
+}
+
+/* ---- Embroidery (stitched thread details drawn in the envelope SVGs) ---- */
+.stitch {
+  fill: none;
+  stroke: var(--color-thread);
+  stroke-width: 1.1;
+  stroke-dasharray: 3.2 2.2;
+  /* running stitch */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stitch-stem {
+  fill: none;
+  stroke: var(--color-thread);
+  stroke-width: 1.4;
+  stroke-dasharray: 2.4 0.7;
+  /* tight stem stitch */
+  stroke-linecap: round;
+}
+
+.satin {
+  fill: url(#satin-stitch);
+  stroke: color-mix(in srgb, var(--color-thread), black 30%);
+  stroke-width: 0.35;
+}
+
+.knot {
+  fill: var(--color-thread);
+  stroke: color-mix(in srgb, var(--color-thread), black 30%);
+  stroke-width: 0.3;
+}
+
+.knot-dark {
+  fill: color-mix(in srgb, var(--color-thread), black 22%);
+}
+
+.thread-fill {
+  fill: var(--color-thread);
+}
+
+.thread-grain {
+  stroke: color-mix(in srgb, var(--color-thread), black 22%);
+  stroke-width: 0.45;
+}
+
+.envelope-flap-wrap {
+  z-index: 5;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64%;
+  display: block;
+  transform-origin: 50% 0;
+  transform: perspective(1100px) rotateX(0deg);
+  transform-style: preserve-3d;
+}
+
+.flap-face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flap-inside {
+  transform: rotateX(180deg);
+}
+
+.flap-shade {
+  fill: #1e0204;
+  opacity: 0;
+}
+
+/* ---- Wax seal ----
+   Lives inside .flap-front, so it rotates with the flap and disappears
+   with the flap's outer face once it passes 90deg. Positioned relative
+   to the flap (which is 64% of the envelope's height), centred just
+   above the flap's tip. */
+.wax-seal {
+  position: absolute;
+  left: 50%;
+  top: 89%;
+  width: 24%;
+  aspect-ratio: 1;
+  display: block;
+  transform: translate(-50%, -50%);
+  transition: filter 0.3s ease;
+}
+
+.envelope:hover .wax-seal {
+  filter: brightness(1.06);
+}
+
+/* Soft golden ring pulsing out from the seal — invites a tap. */
+.wax-seal::after {
+  content: '';
+  position: absolute;
+  inset: 2%;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: seal-glow 2.6s ease-out infinite;
+}
+
+@keyframes seal-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 228, 150, 0.75);
+  }
+
+  70% {
+    box-shadow: 0 0 0 16px rgba(255, 228, 150, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 228, 150, 0);
+  }
+}
+
+.is-opening .wax-seal::after {
+  animation: none;
+}
+
+.seal-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* Irregular blob of wax: two slightly mismatched rounded shapes give
+   the uneven, poured edge. */
+.seal-art {
+  border-radius: 47% 53% 50% 50% / 52% 46% 54% 48%;
+  background: radial-gradient(circle at 32% 28%,
+      #fff4cc 0%, var(--color-seal) 20%, #d2a64a 48%, var(--color-seal-dark) 76%, #7c5719 100%);
+  box-shadow:
+    0 3px 6px rgba(40, 4, 6, 0.45),
+    0 1px 1px rgba(40, 4, 6, 0.35),
+    inset 0 -3px 6px rgba(90, 58, 12, 0.5),
+    inset 0 2px 3px rgba(255, 246, 214, 0.6);
+}
+
+.seal-art::before {
+  content: '';
+  position: absolute;
+  inset: -5% -3% -3% -6%;
+  z-index: -1;
+  border-radius: 55% 45% 48% 52% / 45% 55% 45% 55%;
+  background: radial-gradient(circle at 40% 35%, var(--color-seal), var(--color-seal-dark) 80%);
+  box-shadow: 0 2px 4px rgba(40, 4, 6, 0.35);
+}
+
+/* glossy highlight */
+.seal-art::after {
+  content: '';
+  position: absolute;
+  top: 9%;
+  left: 16%;
+  width: 34%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 252, 235, 0.75), transparent 70%);
+  transform: rotate(-30deg);
+}
+
+/* the pressed-in stamp area */
+.seal-ring {
+  position: absolute;
+  inset: 17%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 62% 66%, #ecca72, #c89d42 65%, #a57b2c);
+  box-shadow:
+    inset 2px 2px 4px rgba(105, 70, 16, 0.65),
+    inset -1px -1px 3px rgba(255, 240, 200, 0.6);
+}
+
+.seal-emblem {
+  width: 84%;
+  height: 84%;
+  color: #8f6621;
+  filter:
+    drop-shadow(0.4px 0.7px 0 rgba(255, 238, 190, 0.75)) drop-shadow(-0.3px -0.4px 0 rgba(90, 58, 12, 0.5));
+}
+
+.seal-emblem-center {
+  fill: #b58a36;
+}
+
+/* ---- Open sequence ---- */
+.is-opening .envelope-float,
+.is-opening .envelope-ground-shadow {
+  animation-play-state: paused;
+}
+
+.is-opening .envelope {
+  cursor: default;
+  animation: envelope-shift 1300ms cubic-bezier(.45, 0, .2, 1) 1700ms forwards;
+}
+
+/* the seal darkens along with the flap as it turns away from the light */
+.is-opening .wax-seal {
+  animation:
+    seal-press 500ms ease-out forwards,
+    seal-shade 1300ms cubic-bezier(.45, 0, .55, 1) 450ms forwards;
+}
+
+.is-opening .envelope-flap {
+  animation: flap-open 1300ms cubic-bezier(.45, 0, .55, 1) 450ms forwards;
+}
+
+.is-opening .flap-front .flap-shade {
+  animation: flap-shade-front 1300ms cubic-bezier(.45, 0, .55, 1) 450ms forwards;
+}
+
+.is-opening .flap-inside .flap-shade {
+  animation: flap-shade-inside 1300ms cubic-bezier(.45, 0, .55, 1) 450ms forwards;
+}
+
+/* z-index swaps at the flap's halfway (90deg) point so it ends up
+   behind the card */
+.is-opening .envelope-flap-wrap {
+  animation: flap-behind 0s linear 1100ms forwards;
+}
+
+/* letter-front fires at the top of the slide (1800ms + half of 2400ms),
+   once the card has fully cleared the pocket */
+.is-opening .envelope-letter {
+  animation:
+    letter-out 2400ms linear 1800ms forwards,
+    letter-front 0s linear 3000ms forwards;
+}
+
+.envelope-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.is-opening .envelope-text {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* nudges the envelope down so envelope + peeking card stay centred */
+@keyframes envelope-shift {
+  to {
+    transform: translateY(10%);
+  }
+}
+
+@keyframes seal-press {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(0.93);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes seal-shade {
+  0% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(0.6);
+  }
+
+  100% {
+    filter: brightness(0.6);
+  }
+}
+
+@keyframes flap-open {
+  to {
+    transform: perspective(1100px) rotateX(180deg);
+  }
+}
+
+@keyframes flap-shade-front {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+
+  100% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes flap-shade-inside {
+  0% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes flap-behind {
+  to {
+    z-index: 2;
+  }
+}
+
+/* Card slides all the way out of the pocket (first half), then jumps in
+   front of the envelope and settles down over it (second half) so the
+   whole card — text included — is visible, not hidden behind the pocket.
+   The -108% must be enough for the card's bottom to clear the envelope. */
+@keyframes letter-out {
+  0% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(.45, 0, .25, 1);
+  }
+
+  50% {
+    transform: translateY(-108%);
+    box-shadow: 0 1px 3px rgba(60, 30, 10, 0.2);
+    animation-timing-function: cubic-bezier(.3, 0, .2, 1);
+  }
+
+  100% {
+    transform: translateY(-22%) scale(1.06);
+    box-shadow: 0 14px 28px rgba(60, 30, 10, 0.28);
+  }
+}
+
+/* Same trick as flap-behind: a zero-length animation that flips the
+   stacking order at a precise moment. */
+@keyframes letter-front {
+  to {
+    z-index: 7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .envelope-float,
+  .envelope-ground-shadow,
+  .envelope-hint,
+  .wax-seal::after,
+  .is-opening .envelope,
+  .is-opening .envelope * {
+    animation: none !important;
+  }
+}
+
+/* Small spaced line sitting just above the script caption */
+.envelope-pretext {
+  font-family: var(--font-caps);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent-dark);
+  margin: 0 0 -2px;
+}
+
+.envelope-caption {
+  font-family: var(--font-script);
+  font-size: 38px;
+  line-height: 1.2;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.envelope-hint {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  animation: hint-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---- Ambient background decoration (continuous, subtle) ---- */
+.ambient-decor {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-piece {
+  position: absolute;
+  top: -10%;
+  opacity: 0;
+  animation-name: ambient-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes ambient-float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translate(16px, 55vh) rotate(160deg);
+    opacity: 0.6;
+  }
+
+  92% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translate(-14px, 110vh) rotate(300deg);
+    opacity: 0;
+  }
+}
+
+/* ---- Butterflies (flight path set in script.js → flyButterfly) ---- */
+.butterfly {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--size, 26px);
+  margin: calc(var(--size, 26px) / -2) 0 0 calc(var(--size, 26px) / -2);
+  opacity: 0.95;
+  filter: drop-shadow(0 3px 2px rgba(60, 30, 10, 0.18));
+}
+
+.butterfly-inner {
+  position: relative;
+  display: flex;
+  perspective: 90px;
+  animation: butterfly-bob 1.7s ease-in-out infinite;
+}
+
+.wing {
+  width: 50%;
+  display: block;
+  animation-duration: var(--flap, 0.22s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.wing svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.wing-left {
+  transform-origin: right center;
+  animation-name: wing-flap-left;
+}
+
+/* left wing is the right wing mirrored */
+.wing-left svg {
+  transform: scaleX(-1);
+}
+
+.wing-right {
+  transform-origin: left center;
+  animation-name: wing-flap-right;
+}
+
+.wing-upper,
+.wing-lower {
+  fill: var(--wing);
+  stroke: color-mix(in srgb, var(--wing), #5a3a24 22%);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.wing-lower {
+  fill: color-mix(in srgb, var(--wing), white 12%);
+}
+
+.wing-veins {
+  fill: none;
+  stroke: color-mix(in srgb, var(--wing), #5a3a24 30%);
+  stroke-width: 0.45;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.wing-spot {
+  fill: #fff;
+  opacity: 0.7;
+}
+
+/* Body sits over the wing roots; same height as the wings, antennae
+   poke out above via overflow: visible. */
+.butterfly-body {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 12%;
+  transform: translateX(-50%);
+  overflow: visible;
+}
+
+.butterfly-body .body-part {
+  fill: color-mix(in srgb, var(--wing), #6b4a32 30%);
+}
+
+.butterfly-body .antenna {
+  fill: none;
+  stroke: color-mix(in srgb, var(--wing), #6b4a32 30%);
+  stroke-width: 0.7;
+  stroke-linecap: round;
+}
+
+@keyframes wing-flap-left {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(68deg);
+  }
+}
+
+@keyframes wing-flap-right {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(-68deg);
+  }
+}
+
+/* Irregular dips and lifts — the fluttery, bouncing flight butterflies
+   have. Scaled to the butterfly's size. */
+@keyframes butterfly-bob {
+  0% {
+    transform: translateY(0);
+  }
+
+  18% {
+    transform: translateY(calc(var(--size, 26px) * -0.35));
+  }
+
+  34% {
+    transform: translateY(calc(var(--size, 26px) * 0.1));
+  }
+
+  52% {
+    transform: translateY(calc(var(--size, 26px) * -0.2));
+  }
+
+  70% {
+    transform: translateY(calc(var(--size, 26px) * 0.25));
+  }
+
+  86% {
+    transform: translateY(calc(var(--size, 26px) * -0.1));
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}

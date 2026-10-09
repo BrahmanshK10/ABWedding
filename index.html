@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- Stops phones that force "dark mode" on websites from inverting the colours -->
+    <meta name="color-scheme" content="only light" />
+    <meta name="theme-color" content="#fcefd3" />
+    <!-- Opened from a phone's home screen, the invitation fills the whole
+     screen with no browser bars -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Aarushika &amp; Brahmansh" />
+    <title>Aarushika &amp; Brahmansh · Wedding Invitation</title>
+    <meta name="description"
+        content="Sagan, Haldi and Wedding · 4th &amp; 5th December 2026 · The Country Touch Resort" />
+
+    <!-- ============================================================
+     WHATSAPP / SOCIAL LINK PREVIEW
+     What WhatsApp, iMessage, Instagram and others show when the link
+     is shared: the title, the line under it and the picture
+     (assets/images/share.jpg, remade with node tools/make-share-image.js).
+     These apps read only these lines (not js/content.js), and the
+     picture's address must be complete, so https://YOUR-SITE-ADDRESS/
+     below must be the site's real address, e.g.
+     https://yourname.github.io/invite/ (with the / at the end).
+     ============================================================ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aarushika &amp; Brahmansh" />
+    <meta property="og:title" content="Aarushika &amp; Brahmansh · Wedding Invitation" />
+    <meta property="og:description"
+        content="You're invited! Sagan, Haldi &amp; Wedding · 4th &amp; 5th December 2026 · The Country Touch Resort" />
+    <meta property="og:url" content="https://YOUR-SITE-ADDRESS/" />
+    <meta property="og:image" content="https://YOUR-SITE-ADDRESS/assets/images/share.jpg?v=2" />
+    <meta property="og:image:secure_url" content="https://YOUR-SITE-ADDRESS/assets/images/share.jpg?v=2" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The wedding of Aarushika &amp; Brahmansh · 4th &amp; 5th December 2026" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Aarushika &amp; Brahmansh · Wedding Invitation" />
+    <meta name="twitter:description"
+        content="You're invited! Sagan, Haldi &amp; Wedding · 4th &amp; 5th December 2026" />
+    <meta name="twitter:image" content="https://YOUR-SITE-ADDRESS/assets/images/share.jpg?v=2" />
+
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Italianno&family=Jost:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet" />
+    <!-- ?v= makes phones fetch the latest file; bump it after edits if an
+     old version seems stuck -->
+    <link rel="stylesheet" href="css/envelope.css?v=9" />
+    <link rel="stylesheet" href="css/main.css?v=9" />
+
+    <!-- Content first, then the colours are applied before anything is
+     drawn, so the page never flashes default colours. -->
+    <script src="js/content.js?v=9"></script>
+    <script>
+        (function () {
+            // the page can't scroll until the envelope has opened
+            document.documentElement.classList.add('lock-scroll');
+            var c = window.SITE_CONTENT;
+            if (!c) return;
+            var root = document.documentElement.style;
+            var env = (c.theme && c.theme.envelope) || {};
+            Object.keys(env).forEach(function (k) {
+                if (/^--[\w-]+$/.test(k) && env[k]) root.setProperty(k, env[k]);
+            });
+            var hero = c.theme && c.theme.chapters && c.theme.chapters.hero;
+            if (hero && hero.bg) root.setProperty('--page-bg', hero.bg);
+        })();
+    </script>
+</head>
+
+<body class="lock-scroll">
+    <!-- ============================================================
+     SCREEN 1: ENVELOPE
+     The envelope is built entirely from HTML/CSS/SVG (no image needed).
+     Tap/click it: the seal is pressed, the flap lifts (carrying the seal
+     with it), the card peeks out, then the page is revealed.
+     EDIT ME: envelope colours are theme.envelope in js/content.js (the
+     rest are the :root variables at the top of css/envelope.css).
+     The soft drifting shapes in the background are purely decorative.
+     ============================================================ -->
+    <div id="envelope-screen">
+        <div class="ambient-decor" id="ambient-decor" aria-hidden="true"></div>
+
+        <div class="envelope-scene">
+            <div class="envelope-float">
+                <span class="envelope-ground-shadow" aria-hidden="true"></span>
+
+                <button id="envelope" class="envelope" aria-label="Open invitation">
+                    <!-- Inside of the envelope (seen once the flap lifts) -->
+                    <span class="envelope-back" aria-hidden="true">
+                        <svg viewBox="0 0 300 200" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="env-inner-grad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" style="
+                        stop-color: color-mix(
+                          in srgb,
+                          var(--color-envelope-inner),
+                          black 25%
+                        );
+                      " />
+                                    <stop offset="1" style="stop-color: var(--color-envelope-inner)" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="300" height="200" rx="8" fill="url(#env-inner-grad)" />
+                        </svg>
+                    </span>
+
+                    <!-- The card tucked inside — slides out and settles in front of
+             the envelope, then its round photo enlarges to the middle of
+             the screen and fades into the main page. Photo comes from
+             envelope.cardImage in js/content.js (square photos suit best);
+             until it exists the monogram (envelope.cardMonogram) shows. -->
+                    <span class="envelope-letter" aria-hidden="true">
+                        <span class="letter-inner">
+                            <span class="letter-photo">
+                                <img alt="" data-content-img="envelope.cardImage" />
+                                <span class="letter-photo-fallback" data-content="envelope.cardMonogram"></span>
+                            </span>
+                        </span>
+                    </span>
+
+                    <!-- Front pocket: left, right and bottom folds -->
+                    <span class="envelope-pocket" aria-hidden="true">
+                        <svg viewBox="0 0 300 200" preserveAspectRatio="none">
+                            <defs>
+                                <clipPath id="env-clip">
+                                    <rect width="300" height="200" rx="8" />
+                                </clipPath>
+                                <linearGradient id="env-left-grad" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0" style="stop-color: var(--color-envelope-shade)" />
+                                    <stop offset="1" style="
+                        stop-color: color-mix(
+                          in srgb,
+                          var(--color-envelope),
+                          var(--color-envelope-shade) 35%
+                        );
+                      " />
+                                </linearGradient>
+                                <linearGradient id="env-right-grad" x1="1" y1="0" x2="0" y2="0">
+                                    <stop offset="0" style="stop-color: var(--color-envelope-shade)" />
+                                    <stop offset="1" style="
+                        stop-color: color-mix(
+                          in srgb,
+                          var(--color-envelope),
+                          var(--color-envelope-shade) 35%
+                        );
+                      " />
+                                </linearGradient>
+                                <linearGradient id="env-bottom-grad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" style="
+                        stop-color: color-mix(
+                          in srgb,
+                          var(--color-envelope),
+                          white 8%
+                        );
+                      " />
+                                    <stop offset="1" style="stop-color: var(--color-envelope)" />
+                                </linearGradient>
+                                <filter id="env-fold-shadow" x="-10%" y="-20%" width="120%" height="140%">
+                                    <feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#2a0306"
+                                        flood-opacity="0.4" />
+                                </filter>
+                                <filter id="env-bottom-shadow" x="-10%" y="-20%" width="120%" height="140%">
+                                    <feDropShadow dx="0" dy="-1.5" stdDeviation="2.2" flood-color="#2a0306"
+                                        flood-opacity="0.45" />
+                                </filter>
+
+                                <!-- Embroidery pieces (also used by the flap). Thread color
+                   is --color-thread in css/style.css. -->
+                                <pattern id="satin-stitch" width="1.6" height="1.6" patternUnits="userSpaceOnUse"
+                                    patternTransform="rotate(40)">
+                                    <rect width="1.6" height="1.6" class="thread-fill" />
+                                    <line x1="0.4" y1="0" x2="0.4" y2="1.6" class="thread-grain" />
+                                </pattern>
+                                <filter id="thread-raise" x="-10%" y="-10%" width="120%" height="120%">
+                                    <feDropShadow dx="0" dy="0.7" stdDeviation="0.35" flood-color="#2a0306"
+                                        flood-opacity="0.6" />
+                                </filter>
+                                <path id="emb-petal" d="M0 0 C-4.2 -3 -4.4 -10 0 -12.5 C4.4 -10 4.2 -3 0 0 Z" />
+                                <path id="emb-leaf" d="M0 0 Q4.5 -3.8 10 0 Q4.5 3.8 0 0 Z" />
+                                <g id="emb-sprig">
+                                    <path class="stitch-stem" d="M18 184 C22 170 13 160 19 146 C22 139 19 133 21 128" />
+                                    <use href="#emb-leaf" class="satin" transform="translate(19 174) rotate(-35)" />
+                                    <use href="#emb-leaf" class="satin" transform="translate(16 162) rotate(215)" />
+                                    <use href="#emb-leaf" class="satin" transform="translate(19 150) rotate(-50)" />
+                                    <use href="#emb-leaf" class="satin"
+                                        transform="translate(20 139) rotate(230) scale(0.8)" />
+                                    <circle cx="21" cy="126" r="1.6" class="knot" />
+                                    <circle cx="18.2" cy="129.5" r="1.1" class="knot" />
+                                    <circle cx="23.8" cy="129.5" r="1.1" class="knot" />
+                                </g>
+                            </defs>
+                            <g clip-path="url(#env-clip)">
+                                <path d="M0 0 L147 106 Q152 110 147 114 L0 200 Z" fill="url(#env-left-grad)"
+                                    filter="url(#env-fold-shadow)" />
+                                <path d="M300 0 L153 106 Q148 110 153 114 L300 200 Z" fill="url(#env-right-grad)"
+                                    filter="url(#env-fold-shadow)" />
+                                <path d="M0 200 L136 101 Q150 91 164 101 L300 200 Z" fill="url(#env-bottom-grad)"
+                                    filter="url(#env-bottom-shadow)" />
+
+                                <!-- Hand-stitched embroidery on the front of the envelope -->
+                                <g class="embroidery" filter="url(#thread-raise)">
+                                    <!-- sides + bottom only: the top of the pocket is open (the
+                     card slides out there), so no stitch runs across it -->
+                                    <path class="stitch" d="M7 14 V188 Q7 193 12 193 H288 Q293 193 293 188 V14" />
+                                    <path class="stitch" d="M22 192 L140 108 Q150 101 160 108 L278 192" />
+
+                                    <!-- side-fold sprigs (right one is mirrored) -->
+                                    <use href="#emb-sprig" />
+                                    <use href="#emb-sprig" transform="translate(300 0) scale(-1 1)" />
+
+                                    <!-- central floral motif -->
+                                    <path class="stitch-stem" d="M150 164 C136 170 124 161 108 168" />
+                                    <path class="stitch-stem" d="M150 164 C164 170 176 161 192 168" />
+                                    <use href="#emb-leaf" class="satin" transform="translate(134 166) rotate(200)" />
+                                    <use href="#emb-leaf" class="satin"
+                                        transform="translate(122 164) rotate(-30) scale(0.85)" />
+                                    <use href="#emb-leaf" class="satin" transform="translate(166 166) rotate(-20)" />
+                                    <use href="#emb-leaf" class="satin"
+                                        transform="translate(178 164) rotate(210) scale(0.85)" />
+                                    <g transform="translate(150 150)">
+                                        <use href="#emb-petal" class="satin" />
+                                        <use href="#emb-petal" class="satin" transform="rotate(72)" />
+                                        <use href="#emb-petal" class="satin" transform="rotate(144)" />
+                                        <use href="#emb-petal" class="satin" transform="rotate(216)" />
+                                        <use href="#emb-petal" class="satin" transform="rotate(288)" />
+                                        <circle r="3" class="knot knot-dark" />
+                                        <circle cx="0" cy="-5" r="0.9" class="knot" />
+                                        <circle cx="4.8" cy="-1.5" r="0.9" class="knot" />
+                                        <circle cx="2.9" cy="4" r="0.9" class="knot" />
+                                        <circle cx="-2.9" cy="4" r="0.9" class="knot" />
+                                        <circle cx="-4.8" cy="-1.5" r="0.9" class="knot" />
+                                    </g>
+                                    <!-- buds at the vine tips -->
+                                    <g transform="translate(107 167) rotate(-100) scale(0.5)">
+                                        <use href="#emb-petal" class="satin" transform="rotate(-28)" />
+                                        <use href="#emb-petal" class="satin" />
+                                        <use href="#emb-petal" class="satin" transform="rotate(28)" />
+                                    </g>
+                                    <g transform="translate(193 167) rotate(100) scale(0.5)">
+                                        <use href="#emb-petal" class="satin" transform="rotate(-28)" />
+                                        <use href="#emb-petal" class="satin" />
+                                        <use href="#emb-petal" class="satin" transform="rotate(28)" />
+                                    </g>
+                                    <!-- scattered french knots -->
+                                    <circle cx="130" cy="150" r="1.2" class="knot" />
+                                    <circle cx="170" cy="150" r="1.2" class="knot" />
+                                    <circle cx="140" cy="179" r="1.1" class="knot" />
+                                    <circle cx="160" cy="179" r="1.1" class="knot" />
+                                    <circle cx="150" cy="183" r="1.4" class="knot" />
+                                </g>
+                            </g>
+                        </svg>
+                    </span>
+
+                    <!-- Top flap: two faces so the inside shows as it swings open -->
+                    <span class="envelope-flap-wrap" aria-hidden="true">
+                        <span class="envelope-flap">
+                            <span class="flap-face flap-front">
+                                <svg viewBox="0 0 300 128" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="flap-front-grad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" style="
+                            stop-color: color-mix(
+                              in srgb,
+                              var(--color-envelope),
+                              white 10%
+                            );
+                          " />
+                                            <stop offset="1" style="stop-color: var(--color-envelope)" />
+                                        </linearGradient>
+                                        <filter id="flap-shadow" x="-10%" y="-10%" width="120%" height="130%">
+                                            <feDropShadow dx="0" dy="2" stdDeviation="2.4" flood-color="#2a0306"
+                                                flood-opacity="0.45" />
+                                        </filter>
+                                    </defs>
+                                    <path d="M8 0 H292 Q300 0 294 6 L164 116 Q150 128 136 116 L6 6 Q0 0 8 0 Z"
+                                        fill="url(#flap-front-grad)" filter="url(#flap-shadow)" />
+                                    <!-- running stitch just inside the flap edge + corner knots -->
+                                    <g class="embroidery" filter="url(#thread-raise)">
+                                        <path class="stitch" d="M22 7 H278 L158 108 Q150 114 142 108 Z" />
+                                        <circle cx="34" cy="16" r="1.3" class="knot" />
+                                        <circle cx="40" cy="14" r="1" class="knot" />
+                                        <circle cx="38" cy="20" r="1" class="knot" />
+                                        <circle cx="266" cy="16" r="1.3" class="knot" />
+                                        <circle cx="260" cy="14" r="1" class="knot" />
+                                        <circle cx="262" cy="20" r="1" class="knot" />
+                                    </g>
+                                    <path class="flap-shade"
+                                        d="M8 0 H292 Q300 0 294 6 L164 116 Q150 128 136 116 L6 6 Q0 0 8 0 Z" />
+                                </svg>
+
+                                <!-- Wax seal — sits on the flap and lifts away with it.
+                   EDIT ME: replace the contents of .wax-seal with your own
+                   seal (e.g. an <img>); the container keeps it positioned. -->
+                                <span class="wax-seal">
+                                    <span class="seal-art">
+                                        <span class="seal-ring">
+                                            <svg class="seal-emblem" viewBox="0 0 40 40">
+                                                <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor"
+                                                    stroke-width="1.3" stroke-linecap="round"
+                                                    stroke-dasharray="0.1 3.1" />
+                                                <g fill="currentColor">
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6" />
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6"
+                                                        transform="rotate(45 20 20)" />
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6"
+                                                        transform="rotate(90 20 20)" />
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6"
+                                                        transform="rotate(135 20 20)" />
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6"
+                                                        transform="rotate(180 20 20)" />
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6"
+                                                        transform="rotate(225 20 20)" />
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6"
+                                                        transform="rotate(270 20 20)" />
+                                                    <ellipse cx="20" cy="11.5" rx="3" ry="6"
+                                                        transform="rotate(315 20 20)" />
+                                                </g>
+                                                <circle cx="20" cy="20" r="3.4" class="seal-emblem-center" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
+                            <span class="flap-face flap-inside">
+                                <svg viewBox="0 0 300 128" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="flap-inside-grad" x1="0" y1="1" x2="0" y2="0">
+                                            <stop offset="0" style="
+                            stop-color: color-mix(
+                              in srgb,
+                              var(--color-envelope-inner),
+                              black 20%
+                            );
+                          " />
+                                            <stop offset="1" style="
+                            stop-color: color-mix(
+                              in srgb,
+                              var(--color-envelope-inner),
+                              var(--color-envelope) 45%
+                            );
+                          " />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M8 128 H292 Q300 128 294 122 L164 12 Q150 0 136 12 L6 122 Q0 128 8 128 Z"
+                                        fill="url(#flap-inside-grad)" />
+                                    <path class="flap-shade"
+                                        d="M8 128 H292 Q300 128 294 122 L164 12 Q150 0 136 12 L6 122 Q0 128 8 128 Z" />
+                                </svg>
+                            </span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="envelope-text">
+                <!-- Text: envelope.pretext / caption / hint in js/content.js -->
+                <p class="envelope-pretext" data-content="envelope.pretext"></p>
+                <p class="envelope-caption" data-content="envelope.caption"></p>
+                <p class="envelope-hint" data-content="envelope.hint"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+     SCREEN 2: THE INVITATION — one continuous page.
+     No section has a background of its own: the page colour itself
+     drifts from event to event as you scroll (see the BACKDROP part of
+     js/page.js). Every text and image comes from js/content.js — the
+     data-content* attributes say which entry fills which spot.
+     Moving pieces:
+       .fx with data-depth   drifts slower (+) or faster (−) than the scroll
+       .fx with data-rise    slides in from below (+px) or above (−px)
+       .fx with data-fade    fades in as it arrives
+       .reveal               text that fades up gently when reached
+     ============================================================ -->
+    <main id="main" inert>
+
+        <!-- ---------- 1. OPENING (the Title card's words in the Intro's temple
+       frame: banana leaves and the brass lamp top left, leaves and the
+       jasmine garland top right, the temple and lotuses along the bottom) ---------- -->
+        <section id="top" class="chapter hero" data-chapter="hero">
+            <div class="hero-corner hero-corner-left fx" data-depth="0.18" aria-hidden="true">
+                <div class="hero-in" style="--d: 1.3s">
+                    <img data-content-img="hero.introLeftImage" alt="" width="320" height="370" />
+                    <!-- soft flicker over the lamp's four wicks (positions on the image) -->
+                    <span class="flame" style="--x: 35%; --y: 56%; --f: 2.4s"></span>
+                    <span class="flame" style="--x: 42.5%; --y: 53.6%; --f: 2.9s"></span>
+                    <span class="flame" style="--x: 57.8%; --y: 53.6%; --f: 2.6s"></span>
+                    <span class="flame" style="--x: 64.8%; --y: 57.2%; --f: 3.1s"></span>
+                </div>
+            </div>
+            <div class="hero-corner hero-corner-right fx" data-depth="0.12" aria-hidden="true">
+                <img class="hero-in" style="--d: 1.6s" data-content-img="hero.introRightImage" alt="" width="257"
+                    height="625" />
+            </div>
+
+            <div class="hero-inner">
+                <img class="hero-ganesh hero-in" style="--d: 0.15s" data-content-img="hero.ganeshImage"
+                    data-content-alt="hero.ganeshAlt" alt="" width="260" height="280" />
+                <p class="hero-invite hero-in" style="--d: 0.55s" data-content="hero.invite"></p>
+                <h1 class="hero-couple">
+                    <span class="hero-name hero-write" style="--d: 1s" data-content="hero.bride"></span>
+                    <span class="hero-parents hero-in" style="--d: 1.7s" data-content="hero.brideParents"></span>
+                    <span class="hero-amp hero-in" style="--d: 2s" data-content="hero.ampersand"></span>
+                    <span class="hero-name hero-write" style="--d: 2.2s" data-content="hero.groom"></span>
+                    <span class="hero-parents hero-in" style="--d: 2.9s" data-content="hero.groomParents"></span>
+                </h1>
+            </div>
+
+            <div class="hero-temple fx" data-depth="-0.06" aria-hidden="true">
+                <img class="hero-in hero-rise" style="--d: 0.8s" data-content-img="hero.templeImage" alt="" width="735"
+                    height="550" />
+            </div>
+        </section>
+
+        <!-- ---------- 2. SAVE THE DATES (still on the paper colour) ---------- -->
+        <section id="dates" class="chapter dates" data-chapter="hero">
+            <p class="eyebrow reveal" data-content="saveTheDate.label"></p>
+            <div class="scratch reveal" id="scratch">
+                <p class="scratch-dates" data-content="saveTheDate.dates"></p>
+                <canvas class="scratch-foil" id="scratch-foil" tabindex="0" role="button"
+                    aria-label="Scratch to reveal the dates"></canvas>
+            </div>
+            <div class="countdown" id="countdown">
+                <div class="countdown-units">
+                    <div class="cd-unit"><span class="cd-num" data-unit="days">00</span><span class="cd-label"
+                            data-content="saveTheDate.days"></span></div>
+                    <span class="cd-sep" aria-hidden="true"></span>
+                    <div class="cd-unit"><span class="cd-num" data-unit="hours">00</span><span class="cd-label"
+                            data-content="saveTheDate.hours"></span></div>
+                    <span class="cd-sep" aria-hidden="true"></span>
+                    <div class="cd-unit"><span class="cd-num" data-unit="minutes">00</span><span class="cd-label"
+                            data-content="saveTheDate.minutes"></span></div>
+                    <span class="cd-sep" aria-hidden="true"></span>
+                    <div class="cd-unit"><span class="cd-num" data-unit="seconds">00</span><span class="cd-label"
+                            data-content="saveTheDate.seconds"></span></div>
+                </div>
+                <p class="countdown-label" data-content="saveTheDate.countdownLabel"></p>
+                <p class="countdown-status" hidden></p>
+            </div>
+        </section>
+
+        <!-- ---------- Evening falls ---------- -->
+        <div class="passage" data-from="hero" data-to="sagan" data-via="toSagan">
+            <svg class="thread thread-a" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C4 30 16 55 10 100" />
+            </svg>
+            <p class="passage-caption" data-content="passages.toSagan"></p>
+            <svg class="thread thread-b" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C16 40 4 70 10 100" />
+            </svg>
+            <span class="thread-gem" aria-hidden="true"></span>
+        </div>
+
+        <!-- ---------- 3. SAGAN / ENGAGEMENT (from the Cocktail card) ---------- -->
+        <section id="sagan" class="chapter event sagan" data-chapter="sagan" data-event="sagan">
+            <div class="sagan-sky" data-daylight="night" aria-hidden="true">
+                <div class="sagan-curtain fx" data-rise="-80" data-fade data-span="0.9">
+                    <canvas id="curtain"></canvas>
+                </div>
+                <!-- Disco balls hang where they do on the card: --x = centre across
+           the row, --len = string length and --size = ball size (both as %
+           of the row width) -->
+                <div class="sagan-balls fx" data-rise="-140" data-span="0.95">
+                    <span class="ball" style="--x: 13; --len: 8.6; --size: 11.8; --dur: 4.4s; --delay: -1.2s"><img
+                            data-content-img="events.sagan.ballSmallImage" alt="" width="146" height="146" /></span>
+                    <span class="ball" style="--x: 24.6; --len: 13.5; --size: 13.5; --dur: 5.1s; --delay: -3s"><img
+                            data-content-img="events.sagan.ballLargeImage" alt="" width="168" height="168" /></span>
+                    <span class="ball" style="--x: 37.1; --len: 8.6; --size: 11.8; --dur: 4.7s; --delay: -0.4s"><img
+                            data-content-img="events.sagan.ballSmallImage" alt="" width="146" height="146" /></span>
+                    <span class="ball" style="--x: 63.7; --len: 8.6; --size: 11.8; --dur: 4.9s; --delay: -2.2s"><img
+                            data-content-img="events.sagan.ballSmallImage" alt="" width="146" height="146" /></span>
+                    <span class="ball" style="--x: 75.4; --len: 13.5; --size: 13.5; --dur: 5.4s; --delay: -0.9s"><img
+                            data-content-img="events.sagan.ballLargeImage" alt="" width="168" height="168" /></span>
+                    <span class="ball" style="--x: 87.8; --len: 8.6; --size: 11.8; --dur: 4.3s; --delay: -2.7s"><img
+                            data-content-img="events.sagan.ballSmallImage" alt="" width="146" height="146" /></span>
+                </div>
+                <div class="twinkles" id="sagan-twinkles"></div>
+            </div>
+
+            <div class="chapter-inner">
+                <p class="event-badge" hidden></p>
+                <h2 class="event-title neon reveal" data-content="events.sagan.title"></h2>
+                <p class="event-subtitle reveal">
+                    <span class="subtitle-lead" data-content="events.sagan.subtitleLead"></span>
+                    <span data-content="events.sagan.subtitle"></span>
+                </p>
+                <div class="date-block reveal" data-date-block="sagan"></div>
+                <p class="event-note reveal" data-content="events.sagan.note"></p>
+                <p class="event-dress reveal" data-dress="sagan"></p>
+                <div class="event-cta reveal" data-event-actions="sagan"></div>
+            </div>
+
+            <div class="sagan-scene fx" data-daylight="night" data-rise="70" data-span="0.8" aria-hidden="true">
+                <img data-content-img="events.sagan.sceneImage" alt="" width="1240" height="708" loading="lazy" />
+            </div>
+        </section>
+
+        <!-- ---------- Sunrise ---------- -->
+        <div class="passage" data-from="sagan" data-to="haldi" data-via="toHaldi">
+            <svg class="thread thread-a" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C16 30 4 60 10 100" />
+            </svg>
+            <p class="passage-caption" data-content="passages.toHaldi"></p>
+            <svg class="thread thread-b" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C4 35 16 65 10 100" />
+            </svg>
+            <span class="thread-gem" aria-hidden="true"></span>
+        </div>
+
+        <!-- ---------- 4. HALDI ----------
+       Laid out like the opening, from the pink-and-marigold Haldi card taken
+       apart: the rose-and-marigold garland, little umbrella and tassel
+       bunting in the top-left corner (swaying a little), the brass lantern
+       and bells top right, petals drifting down, and along the bottom the
+       pink arch with "A & B" on it, bowls of haldi, sweets and the dholak. -->
+        <section id="haldi" class="chapter event haldi" data-chapter="haldi" data-event="haldi" data-daylight="day">
+            <!-- our own morning sky: a soft glow and watercolour washes of marigold
+         and rose on cream paper, fading into the colours before and after -->
+            <div class="haldi-sky" aria-hidden="true"></div>
+            <div class="haldi-corner haldi-corner-left fx" data-depth="0.14" aria-hidden="true">
+                <img data-cutout data-content-img="events.haldi.cornerLeftImage" alt="" width="380" height="552"
+                    loading="lazy" />
+            </div>
+            <div class="haldi-corner haldi-corner-right fx" data-depth="0.08" aria-hidden="true">
+                <img data-cutout data-content-img="events.haldi.cornerRightImage" alt="" width="191" height="412"
+                    loading="lazy" />
+            </div>
+            <div class="haldi-petals" id="haldi-petals" aria-hidden="true"></div>
+
+            <div class="chapter-inner">
+                <p class="event-badge" hidden></p>
+                <p class="eyebrow reveal" data-content="events.haldi.invite"></p>
+                <h2 class="event-title reveal" data-content="events.haldi.title"></h2>
+                <div class="date-block reveal" data-date-block="haldi"></div>
+                <p class="event-note reveal" data-content="events.haldi.note"></p>
+                <p class="event-dress reveal" data-dress="haldi"></p>
+                <div class="event-cta reveal" data-event-actions="haldi"></div>
+            </div>
+
+            <div class="haldi-tableau fx" data-rise="50" data-span="0.8" aria-hidden="true">
+                <div class="haldi-tableau-art">
+                    <img data-cutout data-content-img="events.haldi.tableauImage" alt="" width="736" height="597"
+                        loading="lazy" />
+                    <span class="haldi-monogram" data-content="events.haldi.monogram"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---------- Into the wedding ---------- -->
+        <div class="passage" data-from="haldi" data-to="wedding" data-via="toWedding">
+            <svg class="thread thread-a" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C4 30 16 55 10 100" />
+            </svg>
+            <p class="passage-caption" data-content="passages.toWedding"></p>
+            <svg class="thread thread-b" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C16 40 4 70 10 100" />
+            </svg>
+            <span class="thread-gem" aria-hidden="true"></span>
+        </div>
+
+        <!-- ---------- 5. WEDDING — at sundown ----------
+       The wedding is at golden hour, so the section is a sunset sky: a low
+       sun that sinks a little as you scroll, its glow and rays, wisps of
+       pink cloud, and a few birds flying home. -->
+        <section id="wedding" class="chapter event wedding" data-chapter="wedding" data-event="wedding">
+            <div class="wedding-sky" aria-hidden="true">
+                <div class="sky-wash"></div>
+                <div class="sunset fx" data-depth="0.22">
+                    <span class="sun-rays"></span>
+                    <span class="sun"></span>
+                </div>
+                <span class="cloud" style="--x: -12%; --y: 13%; --w: 42%; --t: 38s"></span>
+                <span class="cloud" style="--x: 70%; --y: 9%; --w: 42%; --t: 46s"></span>
+                <span class="cloud" style="--x: 66%; --y: 36%; --w: 46%; --t: 52s"></span>
+                <span class="cloud" style="--x: -16%; --y: 50%; --w: 44%; --t: 44s"></span>
+                <span class="cloud cloud-lilac" style="--x: 58%; --y: 74%; --w: 52%; --t: 42s"></span>
+                <span class="cloud cloud-lilac" style="--x: -10%; --y: 82%; --w: 50%; --t: 48s"></span>
+                <div class="birds">
+                    <span class="bird" style="--bx: 0; --by: 10; --bs: 1; --fl: 0.9s"></span>
+                    <span class="bird" style="--bx: 26; --by: 0; --bs: 0.8; --fl: 1.05s"></span>
+                    <span class="bird" style="--bx: 30; --by: 24; --bs: 0.85; --fl: 0.95s"></span>
+                    <span class="bird" style="--bx: 56; --by: 8; --bs: 0.65; --fl: 1.15s"></span>
+                    <span class="bird" style="--bx: 64; --by: 32; --bs: 0.6; --fl: 1s"></span>
+                </div>
+            </div>
+
+            <div class="wedding-deity fx" data-rise="-50" data-fade data-span="0.7">
+                <img data-content-img="events.wedding.deityImage" data-content-alt="events.wedding.deityAlt" alt=""
+                    width="240" height="335" loading="lazy" />
+            </div>
+
+            <div class="chapter-inner">
+                <p class="event-badge" hidden></p>
+                <h2 class="event-title reveal" data-content="events.wedding.title"></h2>
+                <div class="date-block reveal" data-date-block="wedding"></div>
+                <p class="event-note reveal" data-content="events.wedding.note"></p>
+                <p class="event-dress reveal" data-dress="wedding"></p>
+
+                <div class="schedule-wrap">
+                    <p class="eyebrow reveal" data-content="events.wedding.scheduleTitle"></p>
+                    <p class="schedule-hint reveal" data-content="events.wedding.scheduleHint"></p>
+                    <ol class="schedule" id="schedule"></ol>
+                    <div class="ritual-panel" id="ritual-panel" aria-live="polite" hidden>
+                        <p class="ritual-name" id="ritual-name"></p>
+                        <p class="ritual-about" id="ritual-about"></p>
+                    </div>
+                </div>
+
+                <div class="event-cta reveal" data-event-actions="wedding"></div>
+            </div>
+        </section>
+
+        <!-- ---------- Sunset, into the evening of the pheras ---------- -->
+        <div class="passage" data-from="wedding" data-to="vows" data-via="toVows">
+            <svg class="thread thread-a" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C16 30 4 60 10 100" />
+            </svg>
+            <p class="passage-caption" data-content="passages.toVows"></p>
+            <svg class="thread thread-b" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C4 35 16 65 10 100" />
+            </svg>
+            <span class="thread-gem" aria-hidden="true"></span>
+        </div>
+
+        <!-- ---------- 6. THE SEVEN VOWS (Saptapadi) ----------
+       The screen holds still while you scroll: a marker walks around the
+       sacred fire, each diya lights as it is reached and its vow appears.
+       Tapping a diya jumps to that vow. Text: vows in js/content.js. -->
+        <section id="vows" class="chapter vows" data-chapter="vows">
+            <div class="vows-track" id="vows-track">
+                <div class="vows-stage">
+                    <p class="eyebrow" data-content="vows.label"></p>
+                    <h2 class="vows-title" data-content="vows.title"></h2>
+                    <div class="vows-ring" id="vows-ring">
+                        <svg class="vows-orbit" viewBox="0 0 100 100" aria-hidden="true">
+                            <circle class="orbit-base" cx="50" cy="50" r="40" />
+                            <circle class="orbit-glow" cx="50" cy="50" r="40" pathLength="1"
+                                transform="rotate(-90 50 50)" />
+                            <circle class="orbit-done" cx="50" cy="50" r="40" pathLength="1"
+                                transform="rotate(-90 50 50)" />
+                        </svg>
+                        <!-- The fire grows with every vow: .flames and .embers are scaled /
+               brightened as a whole, so each flicker stays a simple animation
+               the phone can run smoothly. -->
+                        <div class="agni" aria-hidden="true">
+                            <span class="agni-glow"></span>
+                            <span class="flames">
+                                <span class="fire fire-outer"></span>
+                                <span class="fire fire-mid"></span>
+                                <span class="fire fire-core"></span>
+                            </span>
+                            <span class="embers">
+                                <span class="ember" style="--ex: -18%; --ed: 2.6s; --dl: 0s"></span>
+                                <span class="ember" style="--ex: 12%; --ed: 3.1s; --dl: -1.2s"></span>
+                                <span class="ember" style="--ex: -4%; --ed: 2.2s; --dl: -0.6s"></span>
+                                <span class="ember" style="--ex: 22%; --ed: 3.4s; --dl: -2.1s"></span>
+                                <span class="ember" style="--ex: -26%; --ed: 2.9s; --dl: -1.7s"></span>
+                            </span>
+                            <span class="kund"></span>
+                        </div>
+                        <span class="vows-walker" id="vows-walker" aria-hidden="true"></span>
+                    </div>
+                    <div class="vow-text" id="vow-text" aria-live="polite">
+                        <p class="vow-step" id="vow-step"></p>
+                        <p class="vow-line" id="vow-line"></p>
+                    </div>
+                    <p class="vows-hint" data-content="vows.hint"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---------- A new dawn ---------- -->
+        <div class="passage" data-from="vows" data-to="closing" data-via="toClosing">
+            <svg class="thread thread-a" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C4 30 16 55 10 100" />
+            </svg>
+            <p class="passage-caption" data-content="passages.toClosing"></p>
+            <svg class="thread thread-b" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M10 0 C16 40 4 70 10 100" />
+            </svg>
+            <span class="thread-gem" aria-hidden="true"></span>
+        </div>
+
+        <!-- ---------- 7. VENUE ---------- -->
+        <section id="venue" class="chapter venue" data-chapter="closing">
+            <p class="eyebrow reveal" data-content="venue.label"></p>
+            <h2 class="venue-name reveal" data-content="venue.name"></h2>
+            <p class="venue-address reveal" data-content="venue.address"></p>
+            <div class="map-arch reveal" id="map" hidden></div>
+            <a class="btn reveal" id="venue-directions" target="_blank" rel="noopener" hidden></a>
+        </section>
+
+        <!-- ---------- 8. OUR FAMILIES, CONTACTS, SHARE ----------
+       The families welcoming the guests (family in js/content.js — one
+       group per family, built by page.js) and a note asking them to join. -->
+        <section id="family" class="chapter family" data-chapter="closing">
+            <p class="eyebrow reveal" data-content="family.label"></p>
+            <h2 class="family-title reveal" data-content="family.title"></h2>
+            <div class="family-groups" id="family-groups"></div>
+            <span class="family-gem reveal" aria-hidden="true"></span>
+            <p class="family-note reveal" data-content="family.note"></p>
+
+            <div class="contacts reveal" id="contacts" hidden>
+                <p class="eyebrow" data-content="contacts.title"></p>
+                <ul class="contact-list" id="contact-list"></ul>
+            </div>
+
+            <div class="closing-actions reveal">
+                <a class="btn" id="save-all-dates" hidden></a>
+                <button type="button" class="btn" id="share-invite"></button>
+            </div>
+        </section>
+
+        <!-- ---------- 9. FINALE: the Wedding card's banana plant and brass
+       still life, with the sign-off in the space beside the plant ---------- -->
+        <section class="chapter finale" data-chapter="closing" aria-label="With love">
+            <div class="stage fx" data-rise="40" data-span="0.7">
+                <div class="stage-plant" aria-hidden="true">
+                    <img data-content-img="events.wedding.plantImage" alt="" width="460" height="980" loading="lazy" />
+                </div>
+                <div class="stage-life" aria-hidden="true">
+                    <img data-content-img="events.wedding.stillLifeImage" alt="" width="1170" height="568"
+                        loading="lazy" />
+                    <!-- soft flicker over each diya flame (positions on the image) -->
+                    <span class="flame" style="--x: 26.3%; --y: 32.2%; --f: 2.3s"></span>
+                    <span class="flame" style="--x: 29.3%; --y: 33.6%; --f: 2.9s"></span>
+                    <span class="flame" style="--x: 35.1%; --y: 34.5%; --f: 2.6s"></span>
+                    <span class="flame" style="--x: 38.0%; --y: 32.4%; --f: 3.1s"></span>
+                    <span class="flame flame-low" style="--x: 47.9%; --y: 76.1%; --f: 2.7s"></span>
+                </div>
+                <div class="stage-signoff">
+                    <p class="signoff-script reveal" data-content="closing.signoff"></p>
+                    <p class="signoff-families reveal" data-content="closing.families"></p>
+                    <p class="signoff-names reveal" data-content="closing.names"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Gentle "scroll" cue, shown only at the very top of the page -->
+    <p class="scroll-hint" id="scroll-hint" aria-hidden="true">
+        <span data-content="hero.scrollHint"></span><i></i>
+    </p>
+
+    <!-- Background music toggle. Shown once the envelope is tapped, if
+     musicUrl in js/content.js points at a real file. -->
+    <button id="music-toggle" class="music-toggle" type="button" aria-label="Pause music" aria-pressed="true" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path class="music-note" d="M9 18V5l11-2v13" />
+            <circle class="music-note" cx="6" cy="18" r="3" />
+            <circle class="music-note" cx="17" cy="16" r="3" />
+            <path class="music-slash" d="M3 3l18 18" />
+        </svg>
+    </button>
+
+    <script src="js/page.js?v=9"></script>
+    <script src="js/envelope.js?v=9"></script>
+</body>
+
+</html>
