@@ -200,30 +200,20 @@ window.SITE_CONTENT = {
     /* What the "Share the invitation" button sends along with the link */
     shareText: "You're invited to the wedding of Aarushika & Brahmansh · 4th & 5th December 2026",
 
-    /* ---------- Our families (after the venue) ---------------------------
-       The family members welcoming your guests, one group per family, shown
-       side by side. Add, remove or reorder names freely: each name is one
-       line, and a group with no names is hidden. Replace every
-       "Family member's name" before sharing the invitation. */
+     /* ---------- Our families (after the venue) ---------------------------
+         Add each person's name to the appropriate side. Names are displayed
+         in compact lists beneath the two side headings. */
     family: {
         label: "Swagatakankshi",
         title: "Our Families",
-        families: [
+        sides: [
             {
-                name: "The Lingwal Family",
-                members: [
-                    "Mrs. Rajani & Lt. Shri K.S. Lingwal",
-                    "Mrs. Jaya & Mr. V.C.S Nair",
-                    "Mrs. Akanksha & Mr. Srijit Nair",
-                ],
+                title: "Bride's Side · The Lingwal Family",
+                names: ["The Nair Family", "The Topwal Family"],
             },
             {
-                name: "The Kaushal Family",
-                members: [
-                    "Lt. Mrs. Savitri Devi & Lt. Shri B.L. Kaushal",
-                    "Mrs. Garima & Mr. Rakesh Kaushal",
-                    "Ms. Jigyasa Kaushal",
-                ],
+                title: "Groom's Side · The Kaushal Family",
+                names: ["The Mehra Family", "The Bisht Family"],
             },
         ],
         note: "Your presence would make our celebration complete — we would love to have you with us.",
@@ -292,3 +282,30 @@ window.SITE_CONTENT = {
         petalColours: ["#f2a541", "#f4b9c2", "#e8c77e", "#f7d9a8"],
     },
 };
+
+/* ---------- Changes made by the link (?to=…, ?side=…, ?events=…) ---------- */
+(function () {
+  const C = window.SITE_CONTENT;
+  // (written this way so scripts/check-content.js can still check the file)
+  const q = new URLSearchParams((window.location && window.location.search) || '');
+
+  // ?to=Sharma%20Family  → a personal greeting on the envelope
+  const to = (q.get('to') || '').trim().slice(0, 60);
+  if (to) C.envelope.pretext = 'Dear ' + to;
+
+  // ?side=groom  → the groom's family first
+  if (q.get('side') === 'groom') {
+    C.envelope.caption = 'Brahmansh & Aarushika';
+        [C.hero.bride, C.hero.groom] = [C.hero.groom, C.hero.bride];
+        [C.hero.brideParents, C.hero.groomParents] = [C.hero.groomParents, C.hero.brideParents];
+        C.closing.names = 'Brahmansh & Aarushika';
+    C.family.sides.reverse();
+    C.closing.families = 'The Kaushal & Lingwal Families';
+  }
+
+  // ?events=haldi,wedding  → only those celebrations
+  const only = (q.get('events') || '').split(',').map((s) => s.trim()).filter((s) => C.events[s]);
+  if (only.length) {
+    Object.keys(C.events).forEach((id) => { if (!only.includes(id)) delete C.events[id]; });
+  }
+})();

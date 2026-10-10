@@ -882,22 +882,21 @@
     }
 
     /* ==========================================================================
-       OUR FAMILIES — one group per family: its name, then each member on a
-       line of their own. Groups with no names are left out.
+       OUR FAMILIES — one column per side, with a compact list of names.
        ========================================================================== */
     function renderFamily() {
         const box = document.getElementById('family-groups');
         if (!box) return;
-        const groups = ((C.family && C.family.families) || [])
-            .map((f) => ({ name: (f && f.name) || '', members: ((f && f.members) || []).filter((m) => m && String(m).trim()) }))
-            .filter((f) => f.members.length);
-        if (!groups.length) { box.hidden = true; return; }
-        groups.forEach((f, i) => {
+        const sides = ((C.family && C.family.sides) || [])
+            .filter((side) => side && side.title)
+            .map((side) => ({ title: side.title, names: (side.names || []).filter((name) => name && String(name).trim()) }));
+        if (!sides.length) { box.hidden = true; return; }
+        sides.forEach((side, i) => {
             const group = el('div', 'family-group reveal');
             group.style.setProperty('--rd', `${i * 0.15}s`);
-            if (f.name) group.appendChild(el('h3', 'family-name', f.name));
+            group.appendChild(el('h3', 'family-name', side.title));
             const list = el('ul', 'family-members');
-            f.members.forEach((m) => list.appendChild(el('li', null, m)));
+            side.names.forEach((name) => list.appendChild(el('li', null, name)));
             group.appendChild(list);
             box.appendChild(group);
         });
