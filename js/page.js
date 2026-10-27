@@ -53,7 +53,15 @@
             const value = get(el.dataset.content);
             if (typeof value !== 'string') return;
             if (!value.trim()) el.hidden = true;
-            else setText(el, value);
+            else if (el.classList.contains('hero-parents')) {
+                el.replaceChildren();
+                value.split('\n').forEach((line) => {
+                    const row = document.createElement('span');
+                    row.className = 'hero-parentage-line';
+                    row.textContent = line;
+                    el.appendChild(row);
+                });
+            } else setText(el, value);
         });
 
         $$('[data-content-img]').forEach((img) => {
@@ -697,14 +705,28 @@
         if (mapBox && src) {
             const clip = el('div', 'map-clip');
             const iframe = document.createElement('iframe');
-            iframe.src = src;
             iframe.title = venue.name ? `Map: ${venue.name}` : 'Map';
-            iframe.loading = 'lazy';
             iframe.referrerPolicy = 'strict-origin-when-cross-origin';
             iframe.allowFullscreen = true;
             clip.appendChild(iframe);
             mapBox.appendChild(clip);
             mapBox.hidden = false;
+
+            const loadMap = () => {
+                iframe.loading = 'eager';
+                iframe.src = src;
+            };
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries.some((entry) => entry.isIntersecting)) {
+                        observer.disconnect();
+                        loadMap();
+                    }
+                }, { rootMargin: '2000px 0px' });
+                observer.observe(mapBox);
+            } else {
+                loadMap();
+            }
         }
 
         const dir = document.getElementById('venue-directions');

@@ -283,17 +283,14 @@ window.SITE_CONTENT = {
     },
 };
 
-/* ---------- Changes made by the link (?to=…, ?side=…, ?events=…) ---------- */
+/* ---------- Changes made by the link (?to=…, ?side=…, ?events=…, ?from=…) ---------- */
 (function () {
   const C = window.SITE_CONTENT;
-  // (written this way so scripts/check-content.js can still check the file)
   const q = new URLSearchParams((window.location && window.location.search) || '');
 
-  // ?to=Sharma%20Family  → a personal greeting on the envelope
   const to = (q.get('to') || '').trim().slice(0, 60);
   if (to) C.envelope.pretext = 'Dear ' + to;
 
-  // ?side=groom  → the groom's family first
   if (q.get('side') === 'groom') {
     C.envelope.caption = 'Brahmansh & Aarushika';
         [C.hero.bride, C.hero.groom] = [C.hero.groom, C.hero.bride];
@@ -301,6 +298,16 @@ window.SITE_CONTENT = {
         C.closing.names = 'Brahmansh & Aarushika';
     C.family.sides.reverse();
     C.closing.families = 'The Kaushal & Lingwal Families';
+  }
+
+  if (q.get('from') === 'renuka') {
+    ['brideParents', 'groomParents'].forEach((key) => {
+      if (C.hero[key].includes('Ajay Lingwal')) C.hero[key] = '(Grand D/O Mrs. Rajni Lingwal and Late Shri K.S. Lingwal\nD/O Mrs. Renuka Sarkar)';
+    });
+    C.family.sides.forEach((side) => {
+      if (side.title.includes('Lingwal')) side.title = "Bride's Side";
+    });
+    C.closing.families = '';
   }
 
   // ?events=haldi,wedding  → only those celebrations

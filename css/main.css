@@ -216,7 +216,7 @@ img.is-missing {
 
 .hero-parents {
     display: block;
-    max-width: 44em;
+    width: min(calc(100vw - 32px), 44em);
     margin-top: 4px;
     font-family: var(--font-caps);
     font-weight: 400;
@@ -226,6 +226,24 @@ img.is-missing {
     text-transform: uppercase;
     color: var(--ink);
     text-wrap: balance;
+}
+
+.hero-parentage-line {
+    display: block;
+}
+
+.hero-parentage-line:first-child {
+    white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+    .hero-parents {
+        width: min(calc(100vw - 16px), 44em);
+    }
+
+    .hero-parentage-line:first-child {
+        letter-spacing: -0.04em;
+    }
 }
 
 .hero-amp {
